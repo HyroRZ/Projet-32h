@@ -19,13 +19,13 @@
                 <button class="btn"><?php echo anchor('welcome/signup','Cree ton compte ici'); ?></button>
             </div>
             <div class="form-container">
-                <h1>Connection admin</h1>
+                <h1>Connectes toi a ton compte</h1>
                 <?php echo form_open('formControll/Check','class="form"') ?>
-                    <input type="text" name="user" id="" placeholder="Username" value="admin">
+                    <input type="text" name="user" id="" placeholder="Username" value="Yohan">
                     <input type="password" name="pass" id="" placeholder="Password" value="admin">
                     <input type="submit" value="Connection">
                 </form>
-                <a href="<?php echo base_url('Welcome/client') ?>">Login Client</a>
+                <a href="<?php echo base_url('Welcome') ?>">Login Admin</a>
                 <?php if(isset($_GET['error'])) { ?> 
                     <p class="error animate__animated animate__shakeX"><?php echo $error[$this->input->get('error')]; ?></p>
                 <?php } ?>
@@ -33,10 +33,7 @@
                     <p class="error"><?php echo validation_errors() ?></p>
                 <?php } ?>
             </div>
-            <br>
-        
-        </div>     
-          
+        </div>       
     </div>
 </body>
 </html>
