@@ -37,6 +37,7 @@ class FormControll extends CI_Controller{
             $id=$this->sign->sign($user,$pass,$mail);
             $this->session->set_userdata('username',$user);
             $this->session->set_userdata('id',$id);
+            $this->session->set_userdata('admin',0);
             redirect('RoutesController/index');
         }
     }

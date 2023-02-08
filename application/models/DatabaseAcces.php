@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class DatabaseAcces extends CI_Model 
 {
     public function login($mail,$pass){
-        $query="select * from user where mail=%s or nom=%s and pass=%s";
+        $query="select * from user where mail=%s or nom=%s and pass=%s limit 1";
         $query=sprintf($query,$this->db->escape($mail),$this->db->escape($mail),$this->db->escape($pass));
         $result=$this->db->query($query);
         if($result->num_rows()==1){
@@ -164,6 +164,11 @@ class DatabaseAcces extends CI_Model
     }
     public function insertDemand($idEntana1,$idEntana2)
     {
+        $result="select * from echange where idEntana1=".$idEntana1." and idEntana2=".$idEntana2." and etat=1";
+        $res=$this->db->query($result);
+        if ($res->num_rows()>0) {
+            throw new Exception("Vous avez deja demande cet objet");     
+        }
         $query="insert into echange values(NULL,%s,%s,0,NULL)";
         $query=sprintf($query,$this->db->escape($idEntana1),$this->db->escape($idEntana2));
         $this->db->query($query);
@@ -242,13 +247,12 @@ class DatabaseAcces extends CI_Model
     public function search($critera,$category)
     {
         $array=array();
-        $catQuery="and idCat=%s";
+        $catQuery="and idCat=".$category;
         $query="select * from EntanaCategorie join entana on entana.idEntana=EntanaCategorie.idEntana 
-        where entana.nom like '%%s%%' or entana.description like '%%s%%'";
+        where entana.nom like '%%%s%%' or entana.description like '%%%s%%'";
         $query=sprintf($query,$critera,$critera);
         if (!empty($category)) {
-            $query=$query.$catQuery;
-            $query=sprintf($query,$this->db->escape($category));
+            $query=$query." ".$catQuery;
         }
         $result=$this->db->query($query);
         foreach ($result->result_array() as $row) {
@@ -256,10 +260,75 @@ class DatabaseAcces extends CI_Model
             $array['idCat'][]=$row['idCat'];
             $array['idEntana'][]=$row['idEntana'];
             $array['nom'][]=$row['nom'];
-            $array[''][]=$row[''];
-            $array[''][]=$row[''];
-            $array[''][]=$row[''];
+            $array['description'][]=$row['description'];
+            $array['prix'][]=$row['prix'];
+            $array['idUser'][]=$row['idUser'];
+            $img=$this->getAllImages($row['idEntana']);
+            if (!empty($img)) {
+                $array['image'][]=$img['path'][0]; 
+            }else {
+                $array['image'][]=null; 
+            }   
         }
+        return $array;
+    }
+    public function getHistoric()
+    {
+        $array=array();
+        $query="select idEchange,idEntana1,e1.nom as nom1,e1.idUser as idUser1,u1.nom as user1,idEntana2,e2.nom as nom2,u2.nom as user2,u2.idUser as idUser2,dateAcceptation,etat from echange 
+        inner join entana e1 on echange.idEntana1=e1.idEntana inner join entana e2 on echange.idEntana2=e2.idEntana
+        left outer join user u1 on e1.idUser=u1.idUser left OUTER JOIN user u2 on e2.idUser=u2.idUser where etat=1";
+        $result=$this->db->query($query);
+        foreach ($result->result_array() as $row) {
+            $array['idEchange'][]=$row['idEchange'];
+            $array['idEntana1'][]=$row['idEntana1'];
+            $array['nom1'][]=$row['nom1'];
+            $array['idUser1'][]=$row['idUser1'];
+            $array['user1'][]=$row['user1'];
+            $array['idEntana2'][]=$row['idEntana2'];
+            $array['nom2'][]=$row['nom2'];
+            $array['idUser2'][]=$row['idUser2'];
+            $array['user2'][]=$row['user2'];
+            $array['date'][]=$row['dateAcceptation'];
+        }
+        return $array;
+    }
+    public function getStat()
+    {
+        $array=array();
+        $count=$this->db->query("select count(*) as isany from user where isAdmin!=1");
+        $echange=$this->db->query("select count(*) as isany from echange where etat=1");
+        $inscrit=$count->result_array();
+        $ech=$echange->result_array();
+        $array['inscrit']=$inscrit[0]['isany'];
+        $array['echange']=$ech[0]['isany'];
+        return $array;
+    }
+
+    public function getProdByPrice($pourcent,$idEntana){
+        $entana=$this->getProductById($idEntana);
+        $array=array();
+        $margeBas=$entana['prix']-(($entana['prix']*$pourcent)/100);
+        $margeHaut=$entana['prix']+(($entana['prix']*$pourcent)/100);
+        $query="select idEntana,entana.nom as nom,description,prix,entana.idUser,user.nom as prop from entana 
+        join user on entana.idUser=user.idUser 
+        where entana.idUser!=".$_SESSION['id']." and prix>=".$margeBas." and prix<=".$margeHaut;
+        $result=$this->db->query($query);
+        foreach ($result->result_array() as $row) {
+            $array['id'][]=$row['idEntana'];
+            $array['nom'][]=$row['nom'];
+            $array['description'][]=$row['description'];
+            $array['prix'][]=$row['prix'];
+            $array['idUser'][]=$row['idUser'];
+            $array['proprietaire'][]=$row['prop'];
+            $img=$this->getAllImages($row['idEntana']);
+            if (!empty($img)) {
+                $array['image'][]=$img['path'][0]; 
+            }else {
+                $array['image'][]=null; 
+            } 
+        }
+        return $array;
     }
 }
 

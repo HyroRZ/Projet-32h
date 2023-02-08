@@ -1,5 +1,6 @@
 </div>
 <link rel="stylesheet" href="<?php echo base_url('/assets/css/StyleInsert.css') ?>">
+<div class="insertion_box">
 <div class="insertion">
     <div class="ankavia">
     <h1>Inserez une nouvelle categorie</h1>
@@ -25,5 +26,13 @@
         <input type="submit" value="Valider">
     </form>
     </div>
+    <br>
     
 </div>
+<div class="stat">
+        <h3><?php echo $stat['inscrit'] ?> utilisateur sont inscrit en ce moment</h3>
+        <h3><?php echo $stat['echange'] ?> echange(s) ont ete effectues</h3>
+</div>
+</div>
+
+

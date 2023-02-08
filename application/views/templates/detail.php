@@ -31,7 +31,8 @@
             <?php } else { ?>
                 <p>Vous n'avez rien a echanger</p>
             <?php }          
-         }
-         ?>
+         } else { ?>
+            <a href="<?php echo base_url('RoutesController/getIntervalledProducts?idEntana2='.$produit['id'].'&&marge=10') ?>">+/-10%</a>  <a href="<?php echo base_url('RoutesController/getIntervalledProducts?idEntana2='.$produit['id'].'&&marge=10') ?>">+/-20%</a>
+         <?php } ?>
     </div>
 </div>

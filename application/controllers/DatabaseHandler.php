@@ -8,7 +8,7 @@ class DatabaseHandler extends CI_Controller {
         $categorie=$_GET['category'];
         $this->load->model('DatabaseAcces','access');
         $row=$this->access->search($criteria,$categorie);       
-        $data['produits']=$row;
+        $data['produit']=$row;
         $data['content']='search';
         $this->load->view('templates/template',$data);
     }

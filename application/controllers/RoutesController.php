@@ -69,6 +69,7 @@ class RoutesController extends BaseController{
     {
         $this->load->model('DatabaseAcces','base');
         $data['categories']=$this->base->getAllCategories();
+        $data['stat']=$this->base->getStat();
         $data['content']='admin';
         $this->load->view('templates/template',$data);
     }
@@ -113,5 +114,23 @@ class RoutesController extends BaseController{
         $id=$_POST['idCategorie'];
         $this->base->modifyCat($id,$nom);
         $this->admin();
+    }
+    public function getHistoric()
+    {
+        $this->load->model('DatabaseAcces','base');  
+        $data['historique']=$this->base->getHistoric();
+        $data['content']='historique';
+        $this->load->view('templates/template',$data);
+
+    }
+    public function getIntervalledProducts()
+    {
+        $this->load->model('DatabaseAcces','base');
+        $marge=$_GET['marge'];
+        $idEntana2=$_GET['idEntana2'];
+        $array=$this->base->getProdByPrice($marge,$idEntana2);
+        $data['produit']=$array;
+        $data['content']='margeProd';
+        $this->load->view('templates/template',$data);
     }
 }

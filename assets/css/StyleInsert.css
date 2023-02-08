@@ -1,6 +1,11 @@
 .insertion{
     text-align: center;
     margin: 50px;
+    
+}
+
+.listProduit{
+
 }
 
 input[type="text"],input[type="number"]{

@@ -11,7 +11,7 @@
 
 <div class="container">
         <div class="navbar">
-            <h1 class="logo">LOGO</h1>
+            <h1 class="logo">A-TAKALO</h1>
             <nav>
                 <ul>
                     <li><a href="<?php echo base_url('/RoutesController') ?>">Home</a></li>
@@ -22,7 +22,8 @@
                     <?php } else { ?>
                         <li><a href="<?php echo base_url('RoutesController/admin') ?>">Pages Admin</a></li>
                     <?php } ?>
-                    <li><?php echo anchor('FormControll/logout','Log Out'); ?></li>                    
+                    <li><a href="<?php echo base_url('RoutesController/getHistoric') ?>">Historique des echanges</a></li>
+                    <li><?php echo anchor('FormControll/logout','Deconnection'); ?></li>                    
                 </ul>
             </nav>
         </div>

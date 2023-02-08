@@ -15,15 +15,15 @@
     <div class="container">
         <div class="middle">
             <div class="img">
-                <h2>Haven't an account yet?</h2>
-                <button class="btn"><?php echo anchor('welcome/signup','Sign up'); ?></button>
+                <h2>Tu n as pas encore de compte ?</h2>
+                <button class="btn"><?php echo anchor('welcome/signup','Cree ton compte ici'); ?></button>
             </div>
             <div class="form-container">
-                <h1>Log into your account</h1>
+                <h1>Connectes toi a ton compte</h1>
                 <?php echo form_open('formControll/Check','class="form"') ?>
                     <input type="text" name="user" id="" placeholder="Username" value="admin">
                     <input type="password" name="pass" id="" placeholder="Password" value="admin">
-                    <input type="submit" value="Login">
+                    <input type="submit" value="Connection">
                 </form>
                 <?php if(isset($_GET['error'])) { ?> 
                     <p class="error animate__animated animate__shakeX"><?php echo $error[$this->input->get('error')]; ?></p>

@@ -21,7 +21,8 @@
                     <?php } else { ?>
                         <li><a href="<?php echo base_url('RoutesController/admin') ?>">Pages Admin</a></li>
                     <?php } ?>
-                    <li><?php echo anchor('FormControll/logout','Log Out'); ?></li>
+                    <li><a href="<?php echo base_url('RoutesController/getHistoric') ?>">Historique des echanges</a></li>
+                    <li><?php echo anchor('FormControll/logout','Deconnection'); ?></li>
                     
                 </ul>
             </nav>
